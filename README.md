@@ -1,4 +1,6 @@
 # JARED FRONTEND README
+The Jared Project:
+Jared is an ERP system for handling employees, customers other ERP features related with software companies.
 
 ## Table of Contents
 
@@ -8,30 +10,24 @@
 - [Deploy](#deploy)
 - [Select Endpoints URL](#select-endpoints-url)
 
-
-
-
-
 ## Installation Steps
 
 * [Install NodeJS](https://nodejs.org/es/)
 * Clone the Jared Front-End git repository
 * Move to jared-frontend folder
-* Run `npm install create-react-app`
-* Run `npm install`
+* Install dependecies:
+    * With npm: `npm install`
+    * Or with yarn: `yarn`
 
 
 # Development Mode
-* On Windows: In **package.json**, modify scripts start with `"start": "set PORT=3001 && react-scripts start"`
-* On Linux: In **package.json**, modify scripts start with `"start": "PORT=3001 react-scripts start"`
-* Run `npm start` on jared-frontend folder
-
+* Run `npm start` or `yarn start` on jared-frontend folder
 
 # Build
-Run `npm build` on jared-frontend folder
+Run `npm build` or `yarn build` on jared-frontend folder
 
 
-# Deploy
+# Heroku Deployment
 * Run `heroku git:remote -a jared-frontend`
 * Run `git add .`
 * Run `git commit -m "react-create-app on Heroku"`
@@ -39,7 +35,7 @@ Run `npm build` on jared-frontend folder
 * Run `heroku open`
 
 # Select Endpoints URL
-* Run `heroku config:set REACT_APP_API_HOST=https://jared-backend.herokuapp.com` on jared-frontend folder (replace https://jared-backend.herokuapp.com with your URL )
+* Run `heroku config:set REACT_APP_API_HOST=https://jared-frontend.herokuapp.com/api` on jared-frontend folder (replace https://jared-frontend.herokuapp.com with your URL )
 * Run `heroku open`
 
 # Git workflow
@@ -51,3 +47,6 @@ Run `npm build` on jared-frontend folder
 4. Update your branch against master - `$ git fetch origin && git rebase origin master`
 5. Push your branch to github - `$ git push origin <branch-name>`
 6. Create a Pull request and assign a reviewer
+
+# Test the application on heroku:
+- The application is running at: [Jared Frontend](https://jared-frontend.herokuapp.com)

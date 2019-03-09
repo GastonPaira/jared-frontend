@@ -1,12 +1,20 @@
-import { extendObservable } from "mobx";
+import { extendObservable, set } from "mobx";
 
 class SignInStore {
   constructor() {
     extendObservable(this, {
-      email: "",
-      password: "",
-      navigate: false
+      username: "",
+      password: ""
     });
+  }
+
+  set(name, value) {
+    this[name] = value;
+  }
+
+  clear(){
+    this.username = "";
+    this.password = "";
   }
 }
 

@@ -7,8 +7,14 @@ class SignUpStore {
       username: "",
       password: "",
       repeatPassword: "",
-      navigate: false
     });
+  }
+
+  clear() {
+    this.email = "";
+    this.username = "";
+    this.password = "";
+    this.repeatPassword = "";
   }
 }
 

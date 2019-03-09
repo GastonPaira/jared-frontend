@@ -1,10 +1,7 @@
-import { extendObservable } from "mobx";
 
 class AppStore {
   constructor() {
-    extendObservable(this, {
-      URL: process.env.REACT_APP_API_HOST || "http://localhost:3000"
-    });
+    this.URL = process.env.REACT_APP_API_HOST || "http://192.168.99.100:3000/api"
   }
 }
 

@@ -1,74 +1,79 @@
 import React, { Component } from "react";
-import { Form } from "semantic-ui-react";
+import {
+  Form,
+  Grid,
+  Segment,
+  Container
+} from "semantic-ui-react";
 import "./contact-tab.css";
 import { observer } from "mobx-react";
-import ProfileStore from "../../stores/ProfileStore";
+import UserStore from "../../stores/UserStore";
 
 const ContactTab = observer(
   class ContactTab extends Component {
+    constructor(){
+      super();
+    }
+
     handleChange(e) {
-      ProfileStore[e.target.name] = e.target.value;
+      UserStore.user[e.target.name] = e.target.value;
     }
 
     render() {
       return (
-        <div className="ui container">
-          <Form>
-            <Form.Group>
-              <Form.Input
-                name="address"
-                label="Address"
-                placeholder="Address"
-                width={8}
-                defaultValue={ProfileStore.address}
-                onChange={this.handleChange}
-              />
-              <Form.Input
-                name="phoneNumber"
-                label="Phone number"
-                placeholder="Phone number"
-                width={8}
-                defaultValue={ProfileStore.phoneNumber}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Input
-                name="cellPhone"
-                label="Cell phone"
-                placeholder="Cell phone"
-                width={8}
-                defaultValue={ProfileStore.cellPhone}
-                onChange={this.handleChange}
-              />
-              <Form.Input
-                name="email"
-                label="Email address"
-                placeholder="Email address"
-                width={8}
-                defaultValue={ProfileStore.email}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Input
-                name="skype"
-                label="Skype"
-                placeholder="Skype"
-                width={8}
-                defaultValue={ProfileStore.skype}
-                onChange={this.handleChange}
-              />
-              <Form.Input
-                name="githubID"
-                label="Github ID"
-                placeholder="Github ID"
-                width={8}
-                defaultValue={ProfileStore.githubID}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-          </Form>
+        <div className="ui container aligned">
+          <Container>
+            <Form>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  name="address"
+                  label="Address"
+                  placeholder="Address"
+                  defaultValue={UserStore.user.address}
+                  onChange={this.handleChange}
+                />
+                <Form.Input
+                  name="phone"
+                  label="Phone number"
+                  placeholder="Phone number"
+                  defaultValue={UserStore.user.phone}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  name="cellPhone"
+                  label="Cell phone"
+                  placeholder="Cell phone"
+                  defaultValue={UserStore.user.cellphone}
+                  onChange={this.handleChange}
+                />
+                <Form.Input
+                  name="email"
+                  label="Email address"
+                  placeholder="Email address"
+                  defaultValue={UserStore.user.email}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  name="skype"
+                  label="Skype"
+                  placeholder="Skype"
+                  defaultValue={UserStore.user.skype}
+                  onChange={this.handleChange}
+                />
+                <Form.Input
+                  name="githubID"
+                  label="Github ID"
+                  placeholder="Github ID"
+                  defaultValue={UserStore.user.githubID}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+            </Form>
+          </Container>
         </div>
       );
     }

@@ -1,20 +1,58 @@
 import React, { Component } from "react";
-import { Form } from "semantic-ui-react";
+import {
+  Form,
+  Header,
+  Input,
+  Divider,
+  Dimmer,
+  Loader,
+  Container,
+  Grid,
+  Segment
+} from "semantic-ui-react";
 import "./personal-data-tab.css";
 import { observer } from "mobx-react";
-import ProfileStore from "../../stores/ProfileStore";
+import usersStore from "../../stores/UserStore";
 
 const PersonalDataTab = observer(
   class PersonalDataTab extends Component {
-    handleChange(e) {
-      ProfileStore[e.target.name] = e.target.value;
+
+    constructor() {
+      super();
+      this.state = {
+        loading: false,
+        error: false,
+        githubID: "",
+      };
     }
 
-    setStatus(e, { value }) {
-      ProfileStore.status = value;
+    searchOnGithub = () => {
+      this.setState({ loading: true });
+      usersStore.getGitHubUser(this.state.githubID).
+        then(() => this.setState({ loading: false, error: false }))
+        .catch(error => {
+          console.log(error);
+          this.setState({ loading: false, error: true });
+        }
+
+        )
+
+    };
+
+    handleChange = (e) => {
+      this.setState({ error: false });
+      usersStore.setUserField(e.target.name, e.target.value);
     }
 
-    getStatusTypes() {
+    setGithubUser = (e) => {
+      this.setState({ githubID: e.target.value });
+    }
+
+    setRelation(e, { value }) {
+      usersStore.user.relation = value;
+    }
+
+    getRelationTypes() {
       let typesOptions = [
         {
           text: "hired",
@@ -31,132 +69,150 @@ const PersonalDataTab = observer(
     render() {
       return (
         <div className="ui container">
-          <Form>
-            <Form.Group>
-              <Form.Input
-                name="firstName"
-                label="First name"
-                placeholder="First name"
-                width={8}
-                defaultValue={ProfileStore.firstName}
-                onChange={this.handleChange}
-              />
-              <Form.Input
-                name="lastName"
-                label="Last name"
-                placeholder="Last name"
-                width={8}
-                defaultValue={ProfileStore.lastName}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Input
-                name="dateOfBirth"
-                label="Date of birth"
-                placeholder="Date of birth"
-                width={8}
-                defaultValue={ProfileStore.dateOfBirth}
-                onChange={this.handleChange}
-                type="date"
-              />
-              <Form.Input
-                name="CUIL"
-                label="CUIL"
-                placeholder="CUIL"
-                width={8}
-                defaultValue={ProfileStore.CUIL}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Input
-                name="passport"
-                label="Passport"
-                placeholder="Passport"
-                width={8}
-                defaultValue={ProfileStore.passport}
-                onChange={this.handleChange}
-              />
-              <Form.Input
-                name="USVisa"
-                label="US VISA"
-                placeholder="US VISA"
-                width={8}
-                defaultValue={ProfileStore.USVisa}
-                onChange={this.handleChange}
-                type="date"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Input
-                name="startDate"
-                label="Start date"
-                placeholder="Start date"
-                width={8}
-                defaultValue={ProfileStore.startDate}
-                onChange={this.handleChange}
-                type="date"
-              />
-              <Form.Dropdown
-                name="status"
-                label="Status"
-                placeholder="Status"
-                width={8}
-                onChange={this.setStatus}
-                fluid
-                selection
-                options={this.getStatusTypes()}
-                defaultValue={ProfileStore.status}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Input
-                name="career"
-                label="Career"
-                placeholder="Career"
-                width={8}
-                defaultValue={ProfileStore.career}
-                onChange={this.handleChange}
-              />
-              <Form.Input
-                name="careerStatus"
-                label="Career status"
-                placeholder="Career status"
-                width={8}
-                defaultValue={ProfileStore.careerStatus}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Input
-                name="children"
-                label="Children"
-                placeholder="Children"
-                width={8}
-                defaultValue={ProfileStore.children}
-                onChange={this.handleChange}
-              />
-              <Form.Input
-                name="alarmCode"
-                label="Alarm Code"
-                placeholder="Alarm Code"
-                width={8}
-                defaultValue={ProfileStore.alarmCode}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Group>
-            <Form.Input
-                name="username"
-                label="Username"
-                placeholder="Username"
-                width={8}
-                defaultValue={ProfileStore.username}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-          </Form>
+          <Container>
+            <Dimmer active={this.state.loading} inverted>
+              <Loader inverted>Loading</Loader>
+            </Dimmer>
+            <Header as='h3'>
+              Update your profile by searching you in GitHub
+            </Header>
+            <Input
+              name="github"
+              label="https://github.com/"
+              placeholder="GitHub ID"
+              action={{ color: 'teal', icon: "search", onClick: this.searchOnGithub }}
+              width={8}
+              onChange={this.setGithubUser}
+              error={this.state.error} />
+            <Divider />
+
+            <Form>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  name="name"
+                  label="First name"
+                  placeholder="First name"
+                  width={8}
+                  value={usersStore.user.name}
+                  onChange={this.handleChange}
+                />
+                <Form.Input
+                  name="surname"
+                  label="Last name"
+                  placeholder="Last name"
+                  width={8}
+                  value={usersStore.user.surname}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  name="birthday"
+                  label="Date of birth"
+                  placeholder="Date of birth"
+                  width={8}
+                  value={usersStore.user.birthday}
+                  onChange={this.handleChange}
+                  type="date"
+                />
+                <Form.Input
+                  name="cuil"
+                  label="CUIL"
+                  placeholder="CUIL"
+                  width={8}
+                  value={usersStore.user.cuil}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  name="passport"
+                  label="Passport"
+                  placeholder="Passport"
+                  width={8}
+                  value={usersStore.user.passport}
+                  onChange={this.handleChange}
+                />
+                <Form.Input
+                  name="visa"
+                  label="US VISA"
+                  placeholder="US VISA"
+                  width={8}
+                  value={usersStore.user.visa}
+                  onChange={this.handleChange}
+                  type="date"
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  name="startWorkDate"
+                  label="Start date"
+                  placeholder="Start date"
+                  width={8}
+                  value={usersStore.user.startWorkDate}
+                  onChange={this.handleChange}
+                  type="date"
+                />
+                <Form.Dropdown
+                  name="relation"
+                  label="Status"
+                  placeholder="Status"
+                  width={8}
+                  onChange={this.setRelation}
+                  fluid
+                  selection
+                  options={this.getRelationTypes()}
+                  value={usersStore.user.relation}
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  name="career"
+                  label="Career"
+                  placeholder="Career"
+                  width={8}
+                  value={usersStore.user.career}
+                  onChange={this.handleChange}
+                />
+                <Form.Input
+                  name="status"
+                  label="Career status"
+                  placeholder="Career status"
+                  width={8}
+                  value={usersStore.user.status}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  name="childrenCount"
+                  label="Children"
+                  placeholder="Children"
+                  width={8}
+                  value={usersStore.user.childrenCount}
+                  onChange={this.handleChange}
+                />
+                <Form.Input
+                  name="alarmCode"
+                  label="Alarm Code"
+                  placeholder="Alarm Code"
+                  width={8}
+                  value={usersStore.user.alarmCode}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group widths='equal'>
+                <Form.Input
+                  name="username"
+                  label="Username"
+                  placeholder="Username"
+                  width={8}
+                  value={usersStore.user.username}
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+            </Form>
+          </Container>
         </div>
       );
     }
